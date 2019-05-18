@@ -35,7 +35,7 @@ public class TakeATurn implements Runnable
         if (board.selected != null)
         {
             if (game.debug) System.out.println(game.current.name + " chose " + board.selected );
-            board.playMove();
+            int ret = board.playMove();
         }
 
         if (game.debug) System.out.println("Finishing " + game.current.name + "'s turn...");

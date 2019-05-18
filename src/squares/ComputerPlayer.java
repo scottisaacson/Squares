@@ -267,13 +267,12 @@ public class ComputerPlayer extends Player {
         
         game.board.selected = maxMoveScore.s;
 
+        int points = game.board.playMove();
 
+        ShowHumanScore showScore = new ShowHumanScore(game, points);
+        showScore.showSore();
 
-
-
-        
-        game.board.playMove();
-        
+        /*
         game.isOver();
 
         if (game.gameover == Game.GAMEOVER.NO)
@@ -293,6 +292,7 @@ public class ComputerPlayer extends Player {
             resultDialog.buildAndShow();
         }
         
+        */
         
         return ;
     }

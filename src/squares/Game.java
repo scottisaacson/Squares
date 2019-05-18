@@ -165,10 +165,10 @@ public class Game {
     public void initPlayers()
     {
         
-        HumanPlayer p1 = new HumanPlayer(this, "Scott", Color.RED);
+        HumanPlayer p1 = new HumanPlayer(this, "Player 1", Color.RED);
         this.p1 = p1;
         
-        ComputerPlayer p2 = new ComputerPlayer(this, "Nina", Color.BLACK);
+        ComputerPlayer p2 = new ComputerPlayer(this, "Player 2", Color.BLACK);
         p2.diff = Squares.DIFF_LEVEL_1;
         this.p2 = p2;
         

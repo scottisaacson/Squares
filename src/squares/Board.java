@@ -305,8 +305,9 @@ class Board extends JDialog {
     }
     
     
-    public void playMove()
+    public int playMove()
     {
+        int ret = 0;
         
         if (game.gameover == Game.GAMEOVER.NO)
         {
@@ -316,8 +317,10 @@ class Board extends JDialog {
                 System.exit(-1);
             }
 
-            if (previous != null) previous.highlight = false;
+            
+            // if (previous != null) previous.highlight = false;
             if (selected != null) previous = selected;
+            
             
             selected.highlight = true;
             selected.owner = game.current;
@@ -343,6 +346,7 @@ class Board extends JDialog {
                 game.board.points.setBackground(Color.ORANGE);
             }
 
+            ret = thisScore;
             
             
             
@@ -371,6 +375,7 @@ class Board extends JDialog {
             
         }
         
+        return ret;
     }
 
     public void setCurrentPlayer(Player current)

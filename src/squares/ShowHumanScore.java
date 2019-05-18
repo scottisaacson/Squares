@@ -16,11 +16,13 @@ public class ShowHumanScore
 {
     Board board;
     Game game;
+    int points;
 
-    public ShowHumanScore(Game game)
+    public ShowHumanScore(Game game, int points)
     {
         this.game = game;
         this.board = game.board;
+        this.points = points;
     }
     
     public void showSore()  
@@ -37,7 +39,9 @@ public class ShowHumanScore
             @Override
             protected String doInBackground() throws Exception  
             { 
-                Thread.sleep(1000); 
+                int wait = 2000;
+                if (points == 0) wait = 500;
+                Thread.sleep(wait); 
                 String res = "Done"; 
                 return res; 
             } 
@@ -53,6 +57,16 @@ public class ShowHumanScore
             { 
                 try 
                 {
+                    
+                    if (game.board.previous != null) game.board.previous.highlight = false;
+                    // if (game.board.selected != null) game.board.previous = game.board.selected;
+                    
+                    game.board.squares = null;
+                    game.board.points.setText("0 Points");
+                    game.board.points.setBackground(Color.WHITE);
+                    
+                    game.board.repaint();
+                    
 
                     game.isOver();
 

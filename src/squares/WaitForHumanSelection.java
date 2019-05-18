@@ -73,9 +73,9 @@ public class WaitForHumanSelection
                     }
                     else
                     {
-                        board.playMove();
+                        int points = board.playMove();
                         
-                        ShowHumanScore showScore = new ShowHumanScore(game);
+                        ShowHumanScore showScore = new ShowHumanScore(game, points);
                         showScore.showSore();
                         
                         /*

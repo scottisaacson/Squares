@@ -294,13 +294,10 @@ class Board extends JDialog {
         setSize(fullWidth + 20, fullHeight + 50);
         setLocation(0, 0);                
 
-        // repaint();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((dim.width/2)-(getSize().width/2), (dim.height/2)-(getSize().height/2));                
         
-        
-        //if (game.interactive == true)
-        //{
-            setVisible(true);
-        //}
+        setVisible(true);
 
     }
     

@@ -111,7 +111,7 @@ class Square {
         
         if (isValid)
         {
-            size = maxrow - minrow;
+            size = (maxrow - minrow) + 1;
         }
         
         return;

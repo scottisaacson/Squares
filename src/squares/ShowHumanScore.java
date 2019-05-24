@@ -39,8 +39,8 @@ public class ShowHumanScore
             @Override
             protected String doInBackground() throws Exception  
             { 
-                int wait = 2000;
-                if (points == 0) wait = 500;
+                int wait = 1000; //2000
+                if (points == 0) wait = 300;  //500
                 Thread.sleep(wait); 
                 String res = "Done"; 
                 return res; 

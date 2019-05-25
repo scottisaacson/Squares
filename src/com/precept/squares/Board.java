@@ -24,6 +24,7 @@ class Board extends JDialog {
     public Tile[][] tiles;
 
     public JButton undo;
+    public JButton redo;
     public JButton quit;
     
     public JLabel status;
@@ -273,9 +274,10 @@ class Board extends JDialog {
         top = top + statusHeight + heightGap;
         
         int quitWidth = 80;
-        int okWidth = 80;
-        int controlsWidth = quitWidth + okWidth;
-        int controlsGap = (tilesGridWidth - controlsWidth) / 3;
+        int undoWidth = 80;
+        int redoWidth = 80;
+        int controlsWidth = quitWidth + undoWidth + redoWidth;
+        int controlsGap = (tilesGridWidth - controlsWidth) / 4;
 
         left = widthGap + controlsGap;
         
@@ -288,11 +290,22 @@ class Board extends JDialog {
         pane.add(quit);
         
         left = left + quitWidth + controlsGap;
+        
+        redo = new JButton();
+        redo.setText("REDO");
+        redo.setFont(Squares.myfont12);
+        redo.addActionListener(new BoardRedoActionListener());
+        redo.setBounds(left, top, redoWidth, controlsHeight);
+        redo.setVisible(true);
+        pane.add(redo);
+        
+        left = left + redoWidth + controlsGap;
+        
         undo = new JButton();
         undo.setText("UNDO");
         undo.setFont(Squares.myfont12);
         undo.addActionListener(new BoardUndoActionListener());
-        undo.setBounds(left, top, okWidth, controlsHeight);
+        undo.setBounds(left, top, undoWidth, controlsHeight);
         undo.setVisible(true);
         pane.add(undo);
         
@@ -321,6 +334,7 @@ class Board extends JDialog {
             }
             
             if (selected != null) previous = selected;
+            game.redos = new ArrayList<Move>();
             
             
             selected.highlight = true;
@@ -408,12 +422,16 @@ class Board extends JDialog {
                 last.tile.highlight = false;
                 last.player.score = last.player.score - last.score;
                 game.moves.remove(game.moves.size() - 1);
+                
+                game.redos.add(last);
 
                 last = game.moves.get(game.moves.size() - 1);
                 last.tile.owner = null;
                 last.tile.highlight = false;
                 last.player.score = last.player.score - last.score;
                 game.moves.remove(game.moves.size() - 1);
+
+                game.redos.add(last);
 
                 p1Score.setText(Integer.toString(game.p1.score));
                 p2Score.setText(Integer.toString(game.p2.score));
@@ -425,6 +443,46 @@ class Board extends JDialog {
         }
     }    
 
+    
+    class BoardRedoActionListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            HumanPlayer h = null;
+            if (game.current instanceof HumanPlayer)
+            {
+                h = (HumanPlayer) game.current;
+            }
+            
+            if ( (game.redos.size() > 1) && (h != null) && (h.undoActive == true) )
+            {
+                
+                Move next = game.redos.get(game.redos.size() - 1);
+                next.tile.owner = next.player;
+                next.tile.highlight = false;
+                next.player.score = next.player.score + next.score;
+                game.redos.remove(game.redos.size() - 1);
+
+                game.moves.add(next);
+                
+                next = game.redos.get(game.redos.size() - 1);
+                next.tile.owner = next.player;
+                next.tile.highlight = false;
+                next.player.score = next.player.score + next.score;
+                game.redos.remove(game.redos.size() - 1);
+
+                game.moves.add(next);
+                
+                p1Score.setText(Integer.toString(game.p1.score));
+                p2Score.setText(Integer.toString(game.p2.score));
+
+                repaint();
+                
+            }
+                
+        }
+    }    
+    
     class BoardQuitActionListener implements ActionListener {
 
         //close and dispose of the window.

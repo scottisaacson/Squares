@@ -35,6 +35,7 @@ public class Game {
     public Player first;
     
     public ArrayList<Move> moves;
+    public ArrayList<Move> redos;
 
     public SetupDialogNew setupDialog;
     public JFrame frame;
@@ -49,13 +50,16 @@ public class Game {
    
     public Game(JFrame frame) 
     {
-        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, false);
+        // this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, false);
+        this(frame, 6, Squares.DIFF_LEVEL_7, null, null, false);
     }
 
     
     public Game(JFrame frame, boolean debug) 
     {
-        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, debug);
+        // this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, debug);
+        this(frame, 6, Squares.DIFF_LEVEL_7, null, null, debug);
+        
     }
 
     public Game(JFrame frame, int boardSize, int difficulty, Player p1, Player p2, boolean debug) 
@@ -72,7 +76,9 @@ public class Game {
         setNextPlayer();
         first = current;
         gameover = GAMEOVER.NO;
+
         moves = new ArrayList<Move>();
+        redos = new ArrayList<Move>();
        
     }
     
@@ -163,10 +169,10 @@ public class Game {
 
         if (p1 == null || p2 == null)
         {
-            HumanPlayer newp1 = new HumanPlayer(this, "Player 1", Color.RED);
+            HumanPlayer newp1 = new HumanPlayer(this, "Scott", Color.RED);
             this.p1 = newp1;
 
-            ComputerPlayer newp2 = new ComputerPlayer(this, "Player 2", Color.BLACK);
+            ComputerPlayer newp2 = new ComputerPlayer(this, "Nina", Color.BLACK);
             newp2.diff = this.difficulty;
             this.p2 = newp2;
         }

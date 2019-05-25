@@ -23,7 +23,7 @@ class Board extends JDialog {
     public ArrayList<Square> squares;
     public Tile[][] tiles;
 
-    public JButton ok;
+    public JButton undo;
     public JButton quit;
     
     public JLabel status;
@@ -288,13 +288,13 @@ class Board extends JDialog {
         pane.add(quit);
         
         left = left + quitWidth + controlsGap;
-        ok = new JButton();
-        ok.setText("OK");
-        ok.setFont(Squares.myfont12);
-        ok.addActionListener(new BoardTurnActionListener());
-        ok.setBounds(left, top, okWidth, controlsHeight);
-        ok.setVisible(true);
-        pane.add(ok);
+        undo = new JButton();
+        undo.setText("UNDO");
+        undo.setFont(Squares.myfont12);
+        undo.addActionListener(new BoardUndoActionListener());
+        undo.setBounds(left, top, okWidth, controlsHeight);
+        undo.setVisible(true);
+        pane.add(undo);
         
         
         setSize(fullWidth + 20, fullHeight + 50);
@@ -319,9 +319,7 @@ class Board extends JDialog {
                 System.out.println("ERROR: no move selected");
                 System.exit(-1);
             }
-
             
-            // if (previous != null) previous.highlight = false;
             if (selected != null) previous = selected;
             
             
@@ -333,6 +331,10 @@ class Board extends JDialog {
 
             int thisScore = thisScore();
             game.current.score += thisScore;
+
+            Move m = new Move(game.current, selected, thisScore);
+            game.moves.add(m);
+            
             if (thisScore == 0)
             {
                 game.board.points.setText("0 Points");
@@ -351,30 +353,24 @@ class Board extends JDialog {
 
             ret = thisScore;
             
-            
-            
-
             if (game.debug)
             {
                 System.out.println("Found " +  squares.size() + " squares for a score of " + thisScore);
                 System.out.println(game.current.name + "'s new score is " + game.current.score);
-                
             }
 
             p1Score.setText(Integer.toString(game.p1.score));
             p2Score.setText(Integer.toString(game.p2.score));
-            // invalidate();
-            repaint();
 
+            HumanPlayer h = null;
+            if (game.current instanceof HumanPlayer)
+            {
+                h = (HumanPlayer) game.current;
+                h.undoActive = false;
+            }
             
-            /*
-            //if (game.interactive == true)
-            //{
-                SelectedMove selectedMove = new SelectedMove(game);
-                selectedMove.buildAndShow();
-                selectedMove.dispose();
-            //}
-            */
+            
+            repaint();
             
         }
         
@@ -395,11 +391,37 @@ class Board extends JDialog {
     }
 
 
-    class BoardTurnActionListener implements ActionListener {
+    class BoardUndoActionListener implements ActionListener {
 
-        //close and dispose of the window.
         public void actionPerformed(ActionEvent e) {
-            game.takeATurn();
+            
+            HumanPlayer h = null;
+            if (game.current instanceof HumanPlayer)
+            {
+                h = (HumanPlayer) game.current;
+            }
+            
+            if ( (game.moves.size() > 1) && (h != null) && (h.undoActive == true) )
+            {
+                Move last = game.moves.get(game.moves.size() - 1);
+                last.tile.owner = null;
+                last.tile.highlight = false;
+                last.player.score = last.player.score - last.score;
+                game.moves.remove(game.moves.size() - 1);
+
+                last = game.moves.get(game.moves.size() - 1);
+                last.tile.owner = null;
+                last.tile.highlight = false;
+                last.player.score = last.player.score - last.score;
+                game.moves.remove(game.moves.size() - 1);
+
+                p1Score.setText(Integer.toString(game.p1.score));
+                p2Score.setText(Integer.toString(game.p2.score));
+
+                repaint();
+                
+            }
+                
         }
     }    
 

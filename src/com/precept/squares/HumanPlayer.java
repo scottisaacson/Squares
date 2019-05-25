@@ -20,20 +20,28 @@ import java.awt.image.*;
 
 public class HumanPlayer extends Player {
 
+    boolean canUndo;
+    boolean undoActive;
+    
     public HumanPlayer(Game game, String name, Color color)
     {
         super(game, name, color);
+        canUndo = true;
+        undoActive = false;
     }
 
     public HumanPlayer(Game game, HumanPlayer player)
     {
         super(game, player);
+        canUndo = true;
+        undoActive = false;
     }
     
     @Override
     public void makeMove()
     {
         
+        if (canUndo) undoActive = true;
         WaitForHumanSelection wait = new WaitForHumanSelection(game);
         wait.waitForSelection();
         

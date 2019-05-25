@@ -117,7 +117,7 @@ public class Squares
 
                         if (game == null)
                         {
-                            game = new Game(frame, Squares.BOARDSIZE, debug);
+                            game = new Game(frame, debug);
                         }
                         else
                         {
@@ -147,7 +147,7 @@ public class Squares
 
                         if (game == null)
                         {
-                            game = new Game(frame, Squares.BOARDSIZE, debug);
+                            game = new Game(frame, debug);
                         }
                         else
                         {

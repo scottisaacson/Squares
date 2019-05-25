@@ -33,6 +33,8 @@ public class Game {
     public int cpi = -1;
     public Player current;
     public Player first;
+    
+    public ArrayList<Move> moves;
 
     public SetupDialogNew setupDialog;
     public JFrame frame;
@@ -45,38 +47,38 @@ public class Game {
     
     public boolean interactive = false;
    
-    
-    
-    public Game(JFrame frame, int boardSize, boolean debug) 
+    public Game(JFrame frame) 
     {
+        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, false);
+    }
+
     
-        
+    public Game(JFrame frame, boolean debug) 
+    {
+        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, debug);
+    }
+
+    public Game(JFrame frame, int boardSize, int difficulty, Player p1, Player p2, boolean debug) 
+    {
         this.frame = frame;
-        this.debug = debug;
-        this.board = null;
         this.tileGridCount = boardSize;
-        this.difficulty = Squares.DIFF_LEVEL_3;
-        initPlayers();
+        this.difficulty = difficulty;
+        this.debug = debug;
+
+        this.board = null;
+        
+        initPlayers(p1, p2);
+        
         setNextPlayer();
         first = current;
         gameover = GAMEOVER.NO;
+        moves = new ArrayList<Move>();
        
     }
     
     public Game(Game game) 
     {
-    
-        
-        this.frame = game.frame;
-        this.debug = game.debug;
-        this.board = null;
-        this.tileGridCount = game.tileGridCount;
-        this.difficulty = game.difficulty;
-        initPlayers(game.p1, game.p2);
-        setNextPlayer();
-        first = current;
-        gameover = GAMEOVER.NO;
-       
+        this(game.frame, game.tileGridCount, game.difficulty, game.p1, game.p2, game.debug);
     }
     
 
@@ -130,7 +132,6 @@ public class Game {
     
         if (debug) System.out.println("Starting " + current.name + "'s turn...");
 
-        // if (board.selected != null) board.selected.highlight = false;
         board.selected =  null;
 
         Player player = current;
@@ -153,79 +154,46 @@ public class Game {
         
         player.makeMove();
         
-        /*
-        board.selected = player.selectMove();
-        
-        if (board.selected != null)
-        {
-            if (debug) System.out.println(current.name + " chose " + board.selected );
-            
-            board.playMove();
-        }
-        */
-
-        // if (debug) System.out.println("Finishing " + current.name + "'s turn...");
       
         return;
     }
-    public void initPlayers()
-    {
-        
-        HumanPlayer p1 = new HumanPlayer(this, "Player 1", Color.RED);
-        this.p1 = p1;
-        
-        ComputerPlayer p2 = new ComputerPlayer(this, "Player 2", Color.BLACK);
-        p2.diff = Squares.DIFF_LEVEL_1;
-        this.p2 = p2;
-        
-    }
 
-    
-
-    /* public void initPlayers()
-    {
-        
-        ComputerPlayer p1 = new ComputerPlayer(this, "Nina", Color.RED);
-        p1.diff = Squares6.DIFF_LEVEL_7;
-        this.p1 = p1;
-        
-        *
-        HumanPlayer p2 = new HumanPlayer(this, "Scott", Color.BLACK);
-        this.p2 = p2;
-        *
-        ComputerPlayer p2 = new ComputerPlayer(this, "Scott", Color.BLACK);
-        p2.diff = Squares6.DIFF_LEVEL_3;
-        this.p2 = p2;
-        
-    }
-    */
-    
     public void initPlayers(Player p1, Player p2)
     {
-        
-        if (p1 instanceof HumanPlayer)
-        {
-            HumanPlayer newp1 = new HumanPlayer(this, (HumanPlayer) p1);
-            this.p1 = newp1;
-        }
-        else
-        {
-            ComputerPlayer newp1 = new ComputerPlayer(this, (ComputerPlayer) p1);
-            this.p1 = newp1;
-        }
 
-        if (p2 instanceof HumanPlayer)
+        if (p1 == null || p2 == null)
         {
-            HumanPlayer newp2 = new HumanPlayer(this, (HumanPlayer) p2);
+            HumanPlayer newp1 = new HumanPlayer(this, "Player 1", Color.RED);
+            this.p1 = newp1;
+
+            ComputerPlayer newp2 = new ComputerPlayer(this, "Player 2", Color.BLACK);
+            newp2.diff = this.difficulty;
             this.p2 = newp2;
         }
         else
         {
-            ComputerPlayer newp2 = new ComputerPlayer(this, (ComputerPlayer) p2);
-            this.p2 = newp2;
+            if (p1 instanceof HumanPlayer)
+            {
+                HumanPlayer newp1 = new HumanPlayer(this, (HumanPlayer) p1);
+                this.p1 = newp1;
+            }
+            else
+            {
+                ComputerPlayer newp1 = new ComputerPlayer(this, (ComputerPlayer) p1);
+                this.p1 = newp1;
+            }
+
+            if (p2 instanceof HumanPlayer)
+            {
+                HumanPlayer newp2 = new HumanPlayer(this, (HumanPlayer) p2);
+                this.p2 = newp2;
+            }
+            else
+            {
+                ComputerPlayer newp2 = new ComputerPlayer(this, (ComputerPlayer) p2);
+                this.p2 = newp2;
+            }
         }
-
-
     }
 
     public void setNextPlayer()

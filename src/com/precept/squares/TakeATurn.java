@@ -15,7 +15,7 @@ import java.awt.image.*;
 import java.util.*;
 import java.util.concurrent.*;
   
-  
+/*  
 public class TakeATurn implements Runnable 
 {  
     Game game;
@@ -49,3 +49,4 @@ public class TakeATurn implements Runnable
   
 } 
 
+*/

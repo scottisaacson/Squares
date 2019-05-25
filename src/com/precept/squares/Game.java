@@ -50,15 +50,15 @@ public class Game {
    
     public Game(JFrame frame) 
     {
-        // this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, false);
-        this(frame, 6, Squares.DIFF_LEVEL_7, null, null, false);
+        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, false);
+        // this(frame, 6, Squares.DIFF_LEVEL_7, null, null, false);
     }
 
     
     public Game(JFrame frame, boolean debug) 
     {
-        // this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, debug);
-        this(frame, 6, Squares.DIFF_LEVEL_7, null, null, debug);
+        this(frame, Squares.BOARDSIZE, Squares.DIFF_LEVEL_3, null, null, debug);
+        // this(frame, 6, Squares.DIFF_LEVEL_7, null, null, debug);
         
     }
 
@@ -169,10 +169,10 @@ public class Game {
 
         if (p1 == null || p2 == null)
         {
-            HumanPlayer newp1 = new HumanPlayer(this, "Scott", Color.RED);
+            HumanPlayer newp1 = new HumanPlayer(this, "Player 1", Color.RED);
             this.p1 = newp1;
 
-            ComputerPlayer newp2 = new ComputerPlayer(this, "Nina", Color.BLACK);
+            ComputerPlayer newp2 = new ComputerPlayer(this, "Player 2", Color.BLACK);
             newp2.diff = this.difficulty;
             this.p2 = newp2;
         }
